@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.flow'
 version = '0.0.1-SNAPSHOT'
-description = 'file_extension_block_problem'
+description = 'backend_fileblock'
 
 java {
 	toolchain {

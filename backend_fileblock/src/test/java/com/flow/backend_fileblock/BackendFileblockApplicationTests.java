@@ -1,10 +1,10 @@
-package com.flow.file_extension_block_problem;
+package com.flow.backend_fileblock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FileExtensionBlockProblemApplicationTests {
+class BackendFileblockApplicationTests {
 
 	@Test
 	void contextLoads() {
