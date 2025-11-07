@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: extension-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-extensiondb}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - extension-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-extensiondb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: firendermen/backend_fileblock:latest 
+    container_name: extension-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-extensiondb} 
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - extension-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s 
+
+  frontend:
+    image: firendermen/frontend_fileblock:latest
+    container_name: extension-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - extension-network
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+    driver: local
+
+# 네트워크 정의
+networks:
+  extension-network:
+    driver: bridge
