@@ -2,6 +2,9 @@
 
 ##  프로젝트 소개
 
+<img width="823" height="856" alt="image" src="https://github.com/user-attachments/assets/a92ec61d-ccf6-40df-a8c3-ede50608ba33" />
+
+
 이 프로젝트는 사용자가 파일 확장자를 체크/언체크를 통해 차단하거나 직접입력하여 차단할 수 있고 파일업로드 버튼으로 제대로 차단되었는지를 확인할 수 있는 간단한 웹사이트입니다.
 
 | 항목 | 상세 |
@@ -120,4 +123,5 @@ sudo docker-compose up -d
 
 # 서비스 상태 확인
 sudo docker-compose ps
+
 
